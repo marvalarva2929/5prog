@@ -9,9 +9,8 @@
 	ld r29, 0
 	ld r30, 1
 	in r0, r29
-	ld r1, 0
+	ld r1, 1
 	mov r2, r0
-	subi r2, 1
 	ld r4, 0
 	ld r6, :ReadVal
 	ld r7, 40960
@@ -23,7 +22,7 @@
 :ReadVal
 	in r5, r29
 	addi r4, 1
-	mov (r7)(0), r5
+	mov (r7)(8), r5
 	addi r7, 8
 	brgt r6, r0, r4
 ; input read
