@@ -1,0 +1,117 @@
+; read input
+; r0 contains num of elements
+; r1 contains l pointer
+; r2 contains r pointer
+; r29 input
+; r30 output
+; store numbers in memory starting from 0xa000
+.code
+	ld r29, 0
+	ld r30, 1
+	in r0, r29
+	ld r1, 0
+	mov r2, r0
+	subi r2, 1
+	ld r4, 0
+	ld r6, :ReadVal
+	ld r7, 40960
+; loop through the input
+; r4 is the current iteration
+; r5 contains the current value
+; r6 contains address for beggining of the loop
+; r7 contains memory address to store next value in
+:ReadVal
+	in r5, r29
+	addi r4, 1
+	mov (r7)(0), r5
+	addi r7, 8
+	brgt r6, r0, r4
+; input read
+; now binsearch 
+; r3 contains 2
+; r4 contains sum of l, r
+; r5 contains midpoint of l, r
+; r6 contains address for beggining of the loop
+; r7 contains address for taking the right half of sequence
+; r8 contains address for taking the left half of sequence
+; r9 contains 8
+; r10 contains the value at index of midpoint
+; r11 contains address for Over
+; r12 contains diff of l, r
+; r14 contains 69
+; r15 contains current value to search for
+; r16 and r17 contain Not found and Found, respectively
+; r18 contains 404
+; r19 contains 400
+; r20, 'n'
+; r21, 'o'
+; r22, 't'
+; r23, 'f'
+; r24, 'u'
+; r25, 'd'
+; r26, ' '
+	ld r3, 2
+	ld r6, :Modp
+	ld r7, :RightHalf
+	ld r8, :LeftHalf
+	ld r9, 8
+	in r15, r29
+	ld r14, 69
+	ld r13, 68
+	ld r16, :Nf
+	ld r17, :F
+	ld r18, 404
+	ld r19, 400
+; string
+	ld r20, 110
+	ld r21, 111
+	ld r22, 116
+	ld r23, 102
+	ld r24, 117
+	ld r25, 100
+	ld r26, 32
+	ld r27, 3
+:Modp
+	add r4, r1, r2
+	div r4, r4, r3
+; match does not exist
+	brgt r16, r1, r2
+; 
+	mul r4, r4, r9
+	ld r5, 40960
+	add r5, r5, r4
+	mov r10, (r5)(0)
+	brgt r8, r10, r15
+	brgt r7, r15, r10
+; match found!
+	br r17
+:RightHalf
+	add r4, r1, r2
+	div r5, r4, r3
+	mov r1, r5
+	addi r1, 1
+	br r6
+:LeftHalf
+	add r4, r1, r2
+	div r5, r4, r3
+	mov r2, r5
+	subi r2, 1
+	br r6
+:Nf
+	out r27, r20
+	out r27, r21
+	out r27, r22
+	out r27, r26
+	out r27, r23
+	out r27, r21
+	out r27, r24
+	out r27, r20
+	out r27, r25
+	halt
+:F
+	out r27, r23
+	out r27, r21
+	out r27, r24
+	out r27, r20
+	out r27, r25
+	halt
